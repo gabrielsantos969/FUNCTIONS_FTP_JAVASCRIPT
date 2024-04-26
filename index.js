@@ -1,15 +1,8 @@
-![Badge em Versão](http://img.shields.io/static/v1?label=ftp&message=0.3.10&color=GREEN&style=for-the-badge)
+const Client = require('ftp');
+const fs = require('fs');
+const path = require('path');
 
-# FTP Tutorial
-
-
-É mostrado nesse exemplo as formas mais utilizadas no FTP,  utilizando a biblioteca ´ftp´ com node e javascript. com suas funções para executar ações e como são chamadas.
-
-## Dados necessarios para conexão
-
-Esses dados é para a conexão que é colocado com os dados para o FTP e ter acesso ao serviço e dados ao qual estão contidos e que foi conectado a ele.
-
-```javascript
+const client = new Client();
 var config = {
     host: "HOST-FTP-AQUI",
     user: "USER-FTP-AQUI",
@@ -20,14 +13,8 @@ var config = {
     },
     port: 21
 };
-```
 
-## Lista os dados da conexão
-
-Aqui é feita a conexão do e listagem das pastas e arquivos na raiz do FTP.
-
-- Código da função
-```javascript
+/* Lista todos os arquivos a qual está na parte inicial do FTP */
 async function listarHomeFTP(params) {
     return new Promise((resolve, reject) => {
         client.connect(params);
@@ -49,20 +36,8 @@ async function listarHomeFTP(params) {
         });
     });
 }
-```
-- Chamada da função
-```javascript
-listarHomeFTP(config)
-    .then(list => console.log('Listagem concluída'))
-    .catch(err => console.log('Erro ao listar: ', err));
-```
 
-## Busca por pastas no FTP
-
-Aqui é feita a busca de diretorios no FTP através do endereço de pastas.
-
-- Código da função
-```javascript
+/* Lista tudo que tem no FTP através de um caminho passado. */
 async function searchDirFTP(params, directory) {
     return new Promise((resolve, reject) => {
         client.connect(params);
@@ -91,20 +66,8 @@ async function searchDirFTP(params, directory) {
         });
     });
 }
-```
-- Chamada da função
-```javascript
-searchDirFTP(config, '/GABRIEL/Files')
-    .then(list => console.log('Listagem concluída'))
-    .catch(err => console.log('Erro ao listar: ', err));
-```
 
-## Upload de arquivos para o FTP 
-
-Aqui é feito o envio de arquivos da maquina do cliente para o FTP.
-
-- Código da função
-```javascript
+/* Faz o upload de arquivos para o FTP */
 async function uploadFile(params, directory, filePath) {
     return new Promise((resolve, reject) => {
         client.connect(params);
@@ -134,21 +97,8 @@ async function uploadFile(params, directory, filePath) {
         });
     });
 }
-```
 
-- Chamada da função
-```javascript
-uploadFile(config, '/GABRIEL/Files', './upload/download.jfif')
-    .then(() => console.log('Envio concluído'))
-    .catch(err => console.log('Erro ao enviar: ', err)); 
-```
-
-## Donwload de arquivos do FTP
-
-Nessa função é feito o donwload do arquivo deseja la do FTP
-
-- Código da função
-```javascript
+/* Pega o arquivo do FTP e faz o donwload */
 async function downloadFile(params, directory, fileName) {
     return new Promise((resolve, reject) => {
         client.connect(params);
@@ -181,20 +131,8 @@ async function downloadFile(params, directory, fileName) {
         });
     });
 }
-```
-- Chamada da função
-```javascript
-downloadFile(config, '/GABRIEL/Files', 'download.jfif')
-    .then(() => console.log('Download concluído'))
-    .catch(err => console.log('Erro ao baixar: ', err));
-```
 
-## deleção de arquivos
-
-Essa função faz deleção de arquivos que estão no FTP
-
-- Código da função
-```javascript
+/* Deleta o arquivo do FTP */
 async function deleteFile(params, directory, fileName) {
     return new Promise((resolve, reject) => {
         client.connect(params);
@@ -223,21 +161,8 @@ async function deleteFile(params, directory, fileName) {
         });
     });
 }
-```
 
-- Chamada de função
-```javascript
-deleteFile(config, '/GABRIEL/Files', 'download.jfif')
-    .then(() => console.log('Exclusão concluída'))
-    .catch(err => console.log('Erro ao excluir: ', err));
-```
-
-## Criar uma nova pasta no FTP
-
-Essa função cria uma pasta para o caminho e com o nome que deseja dentro do FTP
-
-- Código da função
-```javascript
+/* Cria um novo diretorio no FTP */
 async function createDirectory(params, directory) {
     return new Promise((resolve, reject) => {
         client.connect(params);
@@ -259,21 +184,8 @@ async function createDirectory(params, directory) {
         });
     });
 }
-```
 
-- Chamada de função
-```javascript
-createDirectory(config, '/GABRIEL/Files/PDF')
-    .then(() => console.log('Criação concluída'))
-    .catch(err => console.log('Erro ao criar: ', err));
-```
-
-## Renomear Arquivo ou Pasta
-
-Faz a troca de nome de um arquivo ou de uma pasta dentro do FTP
-
-- Código da função
-```javascript
+/* Renomeia o nome de arquivos e diretorios no FTP */
 async function renameFileOrDirectory(params, oldPath, newPath) {
     return new Promise((resolve, reject) => {
         client.connect(params);
@@ -295,22 +207,8 @@ async function renameFileOrDirectory(params, oldPath, newPath) {
         });
     });
 }
-```
 
-- Chamada de função
-```javascript
-renameFileOrDirectory(config, '/GABRIEL/Files/24.png', '/GABRIEL/Files/AniversarioJuli.png')
-    .then(() => console.log('Renomeação concluída'))
-    .catch(err => console.log('Erro ao renomear: ', err));
-```
-
-
-## Deleta Pasta
-
-Faz a deleção de uma pasta dentro do FTP
-
-- Código da função
-```javascript
+/* Deleta pastas no FTP */
 async function deleteDirectory(params, directory) {
     return new Promise((resolve, reject) => {
         client.connect(params);
@@ -332,21 +230,8 @@ async function deleteDirectory(params, directory) {
         });
     });
 }
-```
 
-- Chamada de função
-```javascript
-deleteDirectory(config, '/GABRIEL/Files/PDFs')
-    .then(() => console.log('Exclusão concluída'))
-    .catch(err => console.log('Erro ao excluir: ', err));
-```
-
-## Configuração de permissões
-
-Faz a configuração de permissões das pastas e arquivos do FTP
-
-- Código da função
-```javascript
+/* Muda as permissões de pastas e arquivos no FTP */
 async function changePermissions(params, path, mode) {
     return new Promise((resolve, reject) => {
         client.connect(params);
@@ -368,21 +253,8 @@ async function changePermissions(params, path, mode) {
         });
     });
 }
-```
 
-- Chamada de função
-```javascript
-changePermissions(config, '/GABRIEL/Files', '745')
-    .then(() => console.log('Alteração concluída'))
-    .catch(err => console.log('Erro ao alterar: ', err));
-```
-
-## Upload de multiplos arquivos
-
-Faz o envio de multiplos arquivos para o FTP
-
-- Código da função
-```javascript
+/* Envio de multiplos arquivos para o FTP */
 async function uploadMultipleFiles(params, localDir, remoteDir) {
     return new Promise((resolve, reject) => {
         client.connect(params);
@@ -426,12 +298,47 @@ async function uploadMultipleFiles(params, localDir, remoteDir) {
         });
     });
 }
-```
 
-- Chamada de função
-```javascript
-uploadMultipleFiles(config, './upload', '/GABRIEL/Files')
+/* uploadMultipleFiles(config, './upload', '/GABRIEL/Files')
     .then(() => console.log('Upload concluído'))
-    .catch(err => console.log('Erro ao fazer upload: ', err));
-```
+    .catch(err => console.log('Erro ao fazer upload: ', err)); */
+
+
+/* changePermissions(config, '/GABRIEL/Files', '745')
+    .then(() => console.log('Alteração concluída'))
+    .catch(err => console.log('Erro ao alterar: ', err)); */
+
+/* deleteDirectory(config, '/GABRIEL/Files/PDFs')
+    .then(() => console.log('Exclusão concluída'))
+    .catch(err => console.log('Erro ao excluir: ', err)); */
+
+/* renameFileOrDirectory(config, '/GABRIEL/Files/24.png', '/GABRIEL/Files/AniversarioJuli.png')
+    .then(() => console.log('Renomeação concluída'))
+    .catch(err => console.log('Erro ao renomear: ', err)); */
+
+/* createDirectory(config, '/GABRIEL/Files/PDF')
+    .then(() => console.log('Criação concluída'))
+    .catch(err => console.log('Erro ao criar: ', err)); */
+
+/* deleteFile(config, '/GABRIEL/Files', 'download.jfif')
+    .then(() => console.log('Exclusão concluída'))
+    .catch(err => console.log('Erro ao excluir: ', err)); */
+
+/* downloadFile(config, '/GABRIEL/Files', 'download.jfif')
+    .then(() => console.log('Download concluído'))
+    .catch(err => console.log('Erro ao baixar: ', err)); */
+
+
+/* uploadFile(config, '/GABRIEL/Files', './upload/download.jfif')
+    .then(() => console.log('Envio concluído'))
+    .catch(err => console.log('Erro ao enviar: ', err)); */
+
+/* searchDirFTP(config, '/GABRIEL/Files')
+    .then(list => console.log('Listagem concluída'))
+    .catch(err => console.log('Erro ao listar: ', err)); */
+
+/* listarHomeFTP(config)
+    .then(list => console.log('Listagem concluída'))
+    .catch(err => console.log('Erro ao listar: ', err)); */
+
 
