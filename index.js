@@ -4,14 +4,14 @@ const path = require('path');
 
 const client = new Client();
 var config = {
-    host: "HOST-FTP-AQUI",
-    user: "USER-FTP-AQUI",
-    password: "PASSWORD-FTP-AQUI",
-    secure: false,
+    host: "52.206.77.229",
+    user: "fatorrh",
+    password: "(Fator*RH)",
+    secure: true,
     secureOptions: {
         rejectUnauthorized: false
-    },
-    port: 21
+    }
+
 };
 
 /* Lista todos os arquivos a qual está na parte inicial do FTP */
@@ -298,6 +298,33 @@ async function uploadMultipleFiles(params, localDir, remoteDir) {
         });
     });
 }
+
+/* Verifica o status do servidor */
+async function statusFtp(params){
+    return new Promise(async (resolve, reject) => {
+        client.connect(params);
+        client.on("ready", function () {
+          client.status(function (err, status) {
+            if (err) {
+              console.error(err);
+              reject(err);
+            } else {
+              console.log(status); 
+              client.end();
+              resolve(status);
+            }
+          });
+        });
+        client.on("error", function (err) {
+          console.error(err);
+          reject(err);
+        });
+      })
+}
+
+/* statusFtp(config)
+    .then(() => console.log('Status do FTP'))
+    .catch(err => console.log('Erro ao fazer upload: ', err)); */
 
 /* uploadMultipleFiles(config, './upload', '/GABRIEL/Files')
     .then(() => console.log('Upload concluído'))

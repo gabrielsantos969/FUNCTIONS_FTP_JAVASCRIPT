@@ -22,6 +22,42 @@ var config = {
 };
 ```
 
+## Verifica conexão
+
+Aqui é retornado o status de conexão com o FTP para saber se foi conectado, tipo de conexão entre outros.
+
+- Código da função
+```javascript
+async function statusFtp(params){
+    return new Promise(async (resolve, reject) => {
+        client.connect(params);
+        client.on("ready", function () {
+          client.status(function (err, status) {
+            if (err) {
+              console.error(err);
+              reject(err);
+            } else {
+              console.log(status); 
+              client.end();
+              resolve(status);
+            }
+          });
+        });
+        client.on("error", function (err) {
+          console.error(err);
+          reject(err);
+        });
+      })
+}
+
+```
+- Chamada da função
+```javascript
+ statusFtp(config)
+    .then(() => console.log('Status do FTP'))
+    .catch(err => console.log('Erro ao fazer upload: ', err));
+```
+
 ## Lista os dados da conexão
 
 Aqui é feita a conexão do e listagem das pastas e arquivos na raiz do FTP.
