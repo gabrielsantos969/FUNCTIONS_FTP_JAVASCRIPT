@@ -4,14 +4,14 @@ const path = require('path');
 
 const client = new Client();
 var config = {
-    host: "52.206.77.229",
-    user: "fatorrh",
-    password: "(Fator*RH)",
-    secure: true,
+    host: "HOST-FTP-AQUI",
+    user: "USER-FTP-AQUI",
+    password: "PASSWORD-FTP-AQUI",
+    secure: false,
     secureOptions: {
         rejectUnauthorized: false
-    }
-
+    },
+    port: 21
 };
 
 /* Lista todos os arquivos a qual está na parte inicial do FTP */
